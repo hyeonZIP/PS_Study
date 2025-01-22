@@ -5,7 +5,7 @@ class Solution {
     public int solution(int[] numbers, int target) {
         arr = new int[numbers.length];
         targetNum = target;
-
+        //commit test
         for (int i=0; i<numbers.length; i++){
             arr[i] = numbers[i];
         }
