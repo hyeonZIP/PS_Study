@@ -1,32 +1,29 @@
+/*
+문제 풀이: 2회차
+풀이 방법: dfs
+풀이 날짜: 25-01-23
+*/
+import java.util.*;
+
 class Solution {
-    int[] arr;
-    int targetNum = 0;
-    int answer = 0;
-    public int solution(int[] numbers, int target) {
-        arr = new int[numbers.length];
-        targetNum = target;
-        //commit test
-        for (int i=0; i<numbers.length; i++){
-            arr[i] = numbers[i];
-        }
-
-        dfs(arr[0],1);
-        dfs(-1 * arr[0],1);
-
-        return answer;
+    
+    public static int solution(int[] numbers, int target) {
+        
+        return dfs(numbers, target, 0,0);
     }
-
-    public void dfs(int number, int index){
-        if (number == targetNum && index == arr.length){
-            System.out.println("test");
-            answer++;
-            return;
+    
+    public static int dfs(int[] numbers, int target, int index, int sum){
+        
+        if(index == numbers.length){
+            if(sum == target){
+                return 1;
+            }
+            return 0;
         }
-
-        if (index >= arr.length){
-            return;
-        }
-        dfs(number-arr[index], index+1);
-        dfs(number+arr[index], index+1);
+        int count = 0;
+        count += dfs(numbers, target, index+1, sum+numbers[index]);
+        count += dfs(numbers, target, index+1, sum-numbers[index]);
+        
+        return count;
     }
 }
