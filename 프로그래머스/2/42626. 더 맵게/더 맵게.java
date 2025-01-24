@@ -8,23 +8,21 @@ class Solution {
         for(int i : scoville){
             pq.offer(i);
         }
-        int result = 0;
-        int firstFood = pq.poll();
-        int secondFood = pq.poll();
-        while(firstFood < K){
+        int answer = 0;
+        
+        while(pq.size()>1&& pq.peek() < K){
+            int firstFood = pq.poll();
+            int secondFood = pq.poll();
+            
             int newFood = firstFood + secondFood*2;
+            
             pq.offer(newFood);
-            result++;
-            if(pq.size()<2){
-                firstFood = pq.poll();
-                break;
-            }
-            firstFood = pq.poll();
-            secondFood = pq.poll();
+            
+            answer++;
         }
-        if(firstFood<K){
+        if(pq.poll()<K){
             return -1;
         }
-        return result;
+        return answer;
     }
 }
