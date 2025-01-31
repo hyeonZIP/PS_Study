@@ -1,29 +1,28 @@
-/*
-문제 풀이: 2회차
-풀이 방법: dfs
-풀이 날짜: 25-01-23
-*/
+//방법의 수 > dfs
+
 import java.util.*;
 
 class Solution {
-    
-    public static int solution(int[] numbers, int target) {
+    static int answer = 0;
+    public int solution(int[] numbers, int target) 
+    {
+        int startIndex = 0;
+        int sum = 0;
         
-        return dfs(numbers, target, 0,0);
+        dfs(sum,numbers,startIndex,target);
+            
+        return answer;
+        
     }
     
-    public static int dfs(int[] numbers, int target, int index, int sum){
-        
-        if(index == numbers.length){
+    public void dfs(int sum, int[] numbers , int currentIndex, int target){
+        if(currentIndex == numbers.length){
             if(sum == target){
-                return 1;
+                answer++;
             }
-            return 0;
+            return;
         }
-        int count = 0;
-        count += dfs(numbers, target, index+1, sum+numbers[index]);
-        count += dfs(numbers, target, index+1, sum-numbers[index]);
-        
-        return count;
+        dfs(sum - numbers[currentIndex], numbers, currentIndex + 1 , target);
+        dfs(sum + numbers[currentIndex], numbers, currentIndex + 1, target);
     }
 }
