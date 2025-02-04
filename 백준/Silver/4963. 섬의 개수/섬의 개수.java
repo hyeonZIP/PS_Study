@@ -9,8 +9,6 @@ public class Main {
 	static int[][] map;
 	static boolean[][] visited;
 	
-	static int island;
-	
 	static final int[] dx = {0,0,1,-1,-1,1,1,-1};
 	static final int[] dy = {1,-1,0,0,-1,1,-1,1};
 	
@@ -39,7 +37,7 @@ public class Main {
 			map = new int[h+1][w+1];
 			visited = new boolean[h+1][w+1];
 			
-			island = 0;
+			int island = 0;
 			
 			for(int height = 1; height <= h; height++) {
 				st = new StringTokenizer(br.readLine());
@@ -62,7 +60,8 @@ public class Main {
 	}//main
 	
 	private static void bfs(int x,int y) {
-		Queue<Pair> q = new LinkedList<>();
+//		Queue<Pair> q = new LinkedList<>();
+		Deque<Pair> q = new ArrayDeque<>();
 		q.offer(new Pair(x,y));
 		
 		while(!q.isEmpty()) {
