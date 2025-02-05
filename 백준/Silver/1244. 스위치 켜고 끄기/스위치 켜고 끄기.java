@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 /*
+ * 임재현
+ * 
  * 스위치 상태 1부터 N개
  * 
  * 남학생: 1
@@ -42,25 +44,18 @@ public class Main {
 			int number = Integer.parseInt(st.nextToken());
 			
 			if(gender == 1) {//남학생
-				for(int j=number, k=1; j<=switchCount; k++,j+=number) {
-					if(switchState[j]==1) switchState[j] = 0;
-					else switchState[j] = 1;
+				for(int j=number; j<=switchCount;j+=number) {
+					switchState[j] = switchState[j]==1 ? 0:1;
 				}
 			}
 			else {//여학생
-				if(switchState[number]==1) switchState[number] = 0;
-				else switchState[number] = 1;
-				
-				for(int j=number-1,k=number+1; j>=1 && k<=switchCount && switchState[j]==switchState[k]; j--,k++) {
-
-					if(switchState[j]==1) {
-						switchState[j]=0;
-						switchState[k]=0;
-					}
-					else if(switchState[j]==0){
-						switchState[j]=1;
-						switchState[k]=1;
-					}
+				switchState[number] = switchState[number] == 1 ? 0:1;				
+				for(int j=number-1,k=number+1; 
+						j>=1 && k<=switchCount && switchState[j]==switchState[k];
+						j--,k++)
+				{
+					switchState[j] = switchState[j]==1 ? 0 : 1;
+					switchState[k] = switchState[k]==1 ? 0 : 1;
 				}
 			}
 		}
@@ -71,5 +66,5 @@ public class Main {
 				System.out.println();
 			}
 		}
-	}
+	}//main
 }
