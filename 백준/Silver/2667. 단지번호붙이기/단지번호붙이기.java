@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,11 +37,7 @@ public class Main {
 		
 		searchAPT();
 		
-		System.out.println(answer);
-		Collections.sort(answerList);
-		for(int i : answerList) {
-			System.out.println(i+1);
-		}
+		printAnswer();
 	}
 	
 	private static void init() {
@@ -90,6 +85,14 @@ public class Main {
 				count++;
 				dfs(px,py);
 			}
+		}
+	}
+	
+	private static void printAnswer() {
+		System.out.println(answer);
+		Collections.sort(answerList);
+		for(int i : answerList) {
+			System.out.println(i+1);
 		}
 	}
 	
