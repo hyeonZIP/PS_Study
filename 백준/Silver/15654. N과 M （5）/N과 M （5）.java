@@ -12,7 +12,7 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
 		N = Integer.parseInt(st.nextToken());
@@ -29,14 +29,19 @@ public class Main {
 		Arrays.sort(arr);
 		
 		dfs(0, 0);
+		
+		bw.write(sb.toString());
+		bw.flush();
+		bw.close();
+		br.close();
 	}
 	
 	private static void dfs(int index, int numIndex) {
 		if(index == M) {
 			for(int i : numbers) {
-				System.out.print(i + " ");
+				sb.append(i).append(" ");
 			}
-			System.out.println();
+			sb.append("\n");
 			return;
 		}
 		
