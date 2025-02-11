@@ -11,14 +11,10 @@ public class Main {
 	
 	static ArrayList<int[]> chickenPos;
 	static ArrayList<int[]> homePos;
-	static int[] numbers;
 	
 	static int N,M;
 	
 	static int chickDistance = Integer.MAX_VALUE;
-	static boolean[][] activateMap;
-	
-	static ArrayDeque<int[]> q = new ArrayDeque<>();
 	
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -31,7 +27,6 @@ public class Main {
 		
 		chickenPos = new ArrayList<int[]>();
 		homePos = new ArrayList<int[]>();
-		numbers = new int[M];
 		for(int i=0; i<N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j=0; j<N; j++) {
@@ -44,7 +39,8 @@ public class Main {
 				}
 			}
 		}
-		combine(0,0);
+		int[] numbers = new int[M];
+		combine(0,0,numbers);
 		sb.append(chickDistance);
 		bw.write(sb.toString());
 		bw.flush();
@@ -52,20 +48,19 @@ public class Main {
 		br.close();
 	}
 
-	private static void combine(int index, int numberIndex) {
-//		System.out.println("index : " + index + " numberIndex : " + numberIndex);
+	private static void combine(int index, int numberIndex, int[] numbers) {
 		if(index == M) {
-			calcDistance();
+			calcDistance(numbers);
 			return;
 		}
 		
 		for(int i=numberIndex; i<chickenPos.size();i++) {
 			numbers[index] = i;
-			combine(index+1,i+1);
+			combine(index+1,i+1,numbers);
 		}
 	}
 	
-	private static void calcDistance() {
+	private static void calcDistance(int[] numbers) {
 		int minAllDistance = 0;
 		for(int[] i : homePos) {
 			int minHomeToChickenDistance = Integer.MAX_VALUE;
