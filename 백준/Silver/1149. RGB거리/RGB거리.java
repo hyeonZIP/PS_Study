@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,7 +18,7 @@ public class Main {
             }
         }
 
-        int[][] dp = new int[N+1][N+1];
+        int[][] dp = new int[N+1][4];
 
         dp[1][1] = arr[1][1];
         dp[1][2] = arr[1][2];
