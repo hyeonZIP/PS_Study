@@ -1,8 +1,7 @@
 
 /*
- * 백스페이스, 화살표로 인한 입력 위치 변동으로
- * 빈번한 원소의 삽입과 삭제가 있기때문에 ArrayList로 할 시 시간초과 예상
- * LinkedList 또는 Array를 사용한다.
+ * 백스페이스, 화살표로 인한 입력 위치 변동
+ * 빈번한 원소의 삽입과 삭제
  */
 
 import java.util.*;
@@ -15,14 +14,13 @@ public class Main {
 		StringBuilder sb = new StringBuilder();
 		int T = Integer.parseInt(br.readLine());
 		
-		
 		for(int i=0; i<T; i++) {
 			LinkedList<Character> ll = new LinkedList<>();
 			String pwd = br.readLine();
 			
 			int cursor = 0;
-			for(int j=0; j<pwd.length(); j++) {
-				switch(pwd.charAt(j)) {
+			for(char c : pwd.toCharArray()) {
+				switch(c) {
 				case '<':
 					if(cursor - 1 >= 0) {
 						cursor--;
@@ -40,7 +38,7 @@ public class Main {
 					}
 					break;
 				default:
-					ll.add(cursor, pwd.charAt(j));
+					ll.add(cursor, c);
 					cursor++;
 					
 				}//switch
