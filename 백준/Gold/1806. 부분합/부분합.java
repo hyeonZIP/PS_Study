@@ -23,19 +23,15 @@ public class Main {
 
         int minLen = Integer.MAX_VALUE;
         int start = 0;
-        int end = 1;
+        int end = 0;
         int sum = arr[start];
-        while (start < N) {
+        while (end < N) {
             if (sum>=S){
-                minLen = Math.min(minLen,end-start);
-                sum-=arr[start];
-                start++;
+                minLen = Math.min(minLen,end-start+1);
+                sum-=arr[start++];
             }else{
-                if (end == N){
-                    break;
-                }
-                sum += arr[end];
                 end++;
+                if (end < N) sum += arr[end];
             }
         }
 
