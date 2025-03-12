@@ -3,7 +3,6 @@ import java.io.*;
 
 public class Main {
 
-    static int n, m;
     static int[] arr;
 
     public static void main(String[] args) throws IOException {
@@ -48,8 +47,12 @@ public class Main {
     private static void union(int a, int b) {
         int n1 = find(a);
         int n2 = find(b);
-
-        if (n1 != n2) arr[n1] = n2;
+        
+        if(n1==n2) return;
+        
+        if (arr[n1]==arr[n2]) arr[n1]--;
+        else if (arr[n1]<arr[n2]) arr[n2] = n1;
+        else arr[n1] = n2;
     }
 
     private static int find(int n) {
