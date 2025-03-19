@@ -66,7 +66,6 @@ public class Main {
         while (!pq.isEmpty()) {
             Node cur = pq.poll();
 
-
             if (dis[cur.end] < cur.weight) continue;
 
             for (Node next : adj.get(cur.end)) {
