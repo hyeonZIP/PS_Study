@@ -22,7 +22,6 @@ public class Main {
     static List<List<Node>> adj = new ArrayList<>();
     static int N, M;
     static int[] dis;
-    static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -35,8 +34,6 @@ public class Main {
         for (int i = 0; i <= N; i++) {
             adj.add(new ArrayList<>());
         }
-
-        visited = new boolean[N + 1];
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
@@ -69,18 +66,16 @@ public class Main {
         while (!pq.isEmpty()) {
             Node cur = pq.poll();
 
-            if (!visited[cur.end]) {
-                visited[cur.end] = true;
-                if (dis[cur.end] > cur.weight) break;
 
-                for (Node next : adj.get(cur.end)) {
+            if (dis[cur.end] < cur.weight) continue;
 
-                    if (dis[next.end] > dis[cur.end] + next.weight) {
-                        dis[next.end] = dis[cur.end] + next.weight;
-                        pq.offer(new Node(next.end, dis[next.end]));
-                    }
+            for (Node next : adj.get(cur.end)) {
 
+                if (dis[next.end] > dis[cur.end] + next.weight) {
+                    dis[next.end] = dis[cur.end] + next.weight;
+                    pq.offer(new Node(next.end, dis[next.end]));
                 }
+
             }
         }
     }
