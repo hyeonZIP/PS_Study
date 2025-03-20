@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -55,9 +57,10 @@ public class Main {
         }
 
         dijkstra();
+        br.close();
     }
 
-    private static void dijkstra() {
+    private static void dijkstra() throws IOException {
 
         PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> {
             if (o1.transfer == o2.transfer) {
@@ -70,35 +73,22 @@ public class Main {
 
         while (!pq.isEmpty()) {
             Node cur = pq.poll();
-            if (cur.end == M){
-                System.out.println(cur.transfer + " " + cur.weight);
+
+            if (cur.end == M) {
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+                bw.write(cur.transfer + " " + cur.weight);
+                bw.flush();
+                bw.close();
                 break;
             }
 
-            if (visited[cur.end]) continue;
-
-            visited[cur.end] = true;
-            for (Node next : adj.get(cur.end)) {
-
-                if (visited[next.end]) continue;
-
-                pq.offer(new Node(next.end,
-                        cur.weight + next.weight,
-                        trainCompany[cur.end] == trainCompany[next.end] ? cur.transfer : cur.transfer+1));
-
-//                if (next.end != cur.end) {
-//                    if (dist[next.end] > dist[cur.end] + next.weight) {
-//                        dist[next.end] = dist[cur.end] + next.weight;
-//                        pq.offer(new Node(next.end, dist[next.end], cur.transfer + 1));
-//                    }
-//                } else {
-//                    if (dist[next.end] > dist[cur.end] + next.weight) {
-//                        dist[next.end] = dist[cur.end] + next.weight;
-//                        pq.offer(new Node(next.end, dist[next.end], cur.transfer));
-//                    }
-//                }
-
-
+            if (!visited[cur.end]) {
+                visited[cur.end] = true;
+                for (Node next : adj.get(cur.end)) {
+                    if (!visited[next.end]) {
+                        pq.offer(new Node(next.end, cur.weight + next.weight, trainCompany[cur.end] == trainCompany[next.end] ? cur.transfer : cur.transfer + 1));
+                    }
+                }
             }
         }
     }
