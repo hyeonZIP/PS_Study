@@ -54,17 +54,14 @@ public class Main {
 
                 for (Node next : adj.get(cur.end)) {
 
-                    if (!visited[next.end] && dist[next.end] >= dist[cur.end] + next.weight) {
-                        //이동 가능한 노드로 트럭을 보내는 중복 순열을 구해서 모두 pq에 삽입
-                        //각각의 노드에 최소 1개의 트럭은 보내야 한다
-//
-//                        System.out.println("cur.weight = " + cur.weight);
-//                        System.out.println("next.weight = " + next.weight);
+                    if (dist[next.end] >= dist[cur.end] + next.weight) {
+
                         answer[next.end] = (long) (cur.weight * 0.9) + next.weight;
-//                        System.out.println(Arrays.toString(answer));
 
                         dist[next.end] = dist[cur.end] + next.weight;
+
                         pq.offer(new Node(next.end, cur.weight + next.weight));
+
                     }
                 }
             }
