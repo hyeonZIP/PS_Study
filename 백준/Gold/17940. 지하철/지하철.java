@@ -1,10 +1,10 @@
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -68,6 +68,10 @@ public class Main {
 
         boolean[] visited = new boolean[N];
 
+        long[] dist = new long[N];
+        Arrays.fill(dist, Long.MAX_VALUE);
+        dist[0]=0;
+
         while (!pq.isEmpty()) {
             Node cur = pq.poll();
 
@@ -79,10 +83,13 @@ public class Main {
                 break;
             }
 
-            if (!visited[cur.end]) {
-                visited[cur.end] = true;
+//            if (!visited[cur.end]) {
+//                visited[cur.end] = true;
+            if(dist[cur.end] >= cur.weight){
                 for (Node next : adj.get(cur.end)) {
-                    if (!visited[next.end]) {
+//                    if (!visited[next.end]) {
+                    if(dist[next.end] > dist[cur.end] + next.weight){
+                        dist[next.end] = dist[cur.end]+next.weight;
                         pq.offer(new Node(next.end,
                                 cur.weight + next.weight,
                                 trainCompany[cur.end] == trainCompany[next.end] ? cur.transfer : cur.transfer + 1));
