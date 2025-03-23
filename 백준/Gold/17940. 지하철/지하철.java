@@ -1,17 +1,14 @@
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    static final long INF = Long.MAX_VALUE;
 
     static public class Node {
         int end;
@@ -86,7 +83,9 @@ public class Main {
                 visited[cur.end] = true;
                 for (Node next : adj.get(cur.end)) {
                     if (!visited[next.end]) {
-                        pq.offer(new Node(next.end, cur.weight + next.weight, trainCompany[cur.end] == trainCompany[next.end] ? cur.transfer : cur.transfer + 1));
+                        pq.offer(new Node(next.end,
+                                cur.weight + next.weight,
+                                trainCompany[cur.end] == trainCompany[next.end] ? cur.transfer : cur.transfer + 1));
                     }
                 }
             }
