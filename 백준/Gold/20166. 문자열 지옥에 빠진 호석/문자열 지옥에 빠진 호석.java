@@ -18,6 +18,7 @@ public class Main {
 	}
 	
 	static int height,width,K, maxSearchCount;
+	static String[] godLike;
 	static String[][] map;
 	static HashMap<String,Integer> god = new HashMap<>();
 	static int[] dy = {0,0,1,-1,1,-1,1,-1};
@@ -37,8 +38,8 @@ public class Main {
 			}
 		}
 		
-		for(Map.Entry<String,Integer> entry : god.entrySet()) {
-			sb.append(entry.getValue()).append("\n");
+		for(String s : godLike) {
+			sb.append(god.get(s)).append("\n");
 		}
 		
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -61,9 +62,9 @@ public class Main {
 			String currentString = p.collected;
 			int searchCount = p.searchCount;
 			
-			if(god.containsKey(p.collected)) god.put(p.collected,god.get(p.collected)+1);
+			if(god.containsKey(currentString)) god.put(currentString,god.get(currentString)+1);
 			
-			if(searchCount == maxSearchCount) continue;
+			if(searchCount >= maxSearchCount) continue;
 			
 			for(int i=0; i<8; i++) {
 				int py = y + dy[i];
@@ -89,6 +90,7 @@ public class Main {
 		width = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken());
 		
+		godLike = new String[K];
 		map = new String[height][width];
 		
 		for(int y = 0; y<height; y++) {
@@ -102,6 +104,7 @@ public class Main {
 			String s = br.readLine();
 			maxSearchCount = Math.max(maxSearchCount, s.length());
 			god.put(s, 0);
+			godLike[y] = s;
 		}
 	}
 }
