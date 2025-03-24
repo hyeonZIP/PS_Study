@@ -29,9 +29,7 @@ public class Main {
 				}
 				
 				if(map.containsKey(name)) {
-					PriorityQueue<Integer> updatedPq = map.get(name);
-					updatedPq.addAll(pq);
-					map.put(name, updatedPq);
+					map.get(name).addAll(pq);
 				}else {
 					map.put(name, pq);
 				}
@@ -47,8 +45,6 @@ public class Main {
 
 						answer += pq.poll();
 					}
-					
-					map.put(name, pq);
 				}
 				
 				
