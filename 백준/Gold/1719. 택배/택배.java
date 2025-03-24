@@ -7,12 +7,10 @@ public class Main {
 	static public class Node{
 		int end;
 		long weight;
-//		int privous;
 		
 		public Node(int end, long weight) {
 			this.end = end;
 			this.weight = weight;
-//			this.privous = privous;
 		}
 	}
 	static int n,m;
@@ -32,13 +30,18 @@ public class Main {
 		for(int i=0; i<n; i++) {
 			map[i][i] = "-";
 		}
-		
+		StringBuilder sb = new StringBuilder();
 		for(String[] i : map) {
 			for(String ii : i) {
-				System.out.print(ii + " ");
+				sb.append(ii).append(" ");
 			}
-			System.out.println();
+			sb.append("\n");
 		}
+		
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		bw.write(sb+"");
+		bw.flush();
+		bw.close();
 		
 	}
 	
