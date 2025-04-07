@@ -16,7 +16,7 @@
 
 ### 문제 설명
 
-<p><img alt="" src="https://www.acmicpc.net/upload/codershigh2015/statement.png" style="height:674px; width:594px"></p>
+<p><img alt="" src="" style="height:674px; width:594px"></p>
 
 <p>(위에서 아래로, 오른쪽에서 왼쪽으로 읽어주세요.)</p>
 
