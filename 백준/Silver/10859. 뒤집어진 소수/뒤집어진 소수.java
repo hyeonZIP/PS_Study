@@ -3,37 +3,30 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String N = br.readLine();
-        long number = Long.parseLong(N);
-
-        if (number == 1){
-            System.out.println("no");
-        }else{
-            if (isPrime(number)){
-
-                char[] arr = N.toCharArray();
-
-                char[] reversedArr = isReversible(arr);
-                if (reversedArr.length == 0) {
-                    System.out.println("no");
-                } else {
-                    long reverseNumber = Long.parseLong(new String(reversedArr));
-                    if (isPrime(reverseNumber)) {
-                        System.out.println("yes");
-                    } else {
-                        System.out.println("no");
-                    }
-                }
-            }else{
-                System.out.println("no");
-            }
-        }
+        String input = br.readLine();
+        System.out.println(sol(input));
     }
 
-    private static char[] isReversible(char[] arr){
-        int end = arr.length-1;
+    private static String sol(String input) {
+        long number = Long.parseLong(input);
+        
+        if (number != 1 && isPrime(number)) {
+            char[] reversedArr = isReversible(input.toCharArray());
+
+            if (reversedArr.length != 0) {
+                long reverseNumber = Long.parseLong(new String(reversedArr));
+
+                if (isPrime(reverseNumber)) return "yes";
+            }
+        }
+        return "no";
+    }
+
+    private static char[] isReversible(char[] arr) {
+        int end = arr.length - 1;
         char[] reversedArr = new char[arr.length];
 
         for (char c : arr) {
@@ -54,18 +47,15 @@ public class Main {
                 case 9:
                     reversedArr[end] = '6';
                     end--;
-                    break;
-                default:
-                    
             }
         }
 
         return reversedArr;
     }
 
-    private static boolean isPrime(long number){
+    private static boolean isPrime(long number) {
         for (int i = 2; i <= Math.sqrt(number); i++) {
-            if (number % i == 0){
+            if (number % i == 0) {
                 return false;
             }
         }
