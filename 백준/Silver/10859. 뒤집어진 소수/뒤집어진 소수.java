@@ -11,69 +11,64 @@ public class Main {
         if (number == 1){
             System.out.println("no");
         }else{
-            boolean flag0 = true;
+            if (isPrime(number)){
 
-            for (int i = 2; i <= Math.sqrt(number); i++) {
-                if (number % i == 0){
-                    flag0 = false;
-                    break;
-                }
-            }
-
-            if (flag0){
                 char[] arr = N.toCharArray();
 
-                boolean flag1 = true;
-                int end = arr.length - 1;
-
-                char[] reverseArr = new char[arr.length];
-
-                for (char c : arr) {
-                    int num = Character.getNumericValue(c);
-                    if (num == 3 || num == 4 || num == 7) {
-                        flag1 = false;
-                        break;
-                    }
-
-                    switch (num) {
-                        case 1, 2, 5, 8, 0:
-                            reverseArr[end] = (char) (num + '0');
-                            end--;
-                            break;
-                        case 6:
-                            reverseArr[end] = '9';
-                            end--;
-                            break;
-                        case 9:
-                            reverseArr[end] = '6';
-                            end--;
-                    }
-                }
-
-                if (flag1) {
-                    boolean flag2 = true;
-                    long reverseNumber = Long.parseLong(new String(reverseArr));
-
-                    for (int i = 2; i <= Math.sqrt(reverseNumber); i++) {
-                        if (reverseNumber % i == 0) {
-                            flag2 = false;
-                            break;
-                        }
-                    }
-
-                    if (flag2) {
+                char[] reversedArr = isReversible(arr);
+                if (reversedArr.length == 0) {
+                    System.out.println("no");
+                } else {
+                    long reverseNumber = Long.parseLong(new String(reversedArr));
+                    if (isPrime(reverseNumber)) {
                         System.out.println("yes");
                     } else {
                         System.out.println("no");
                     }
-                } else {
-                    System.out.println("no");
                 }
             }else{
                 System.out.println("no");
             }
         }
+    }
 
+    private static char[] isReversible(char[] arr){
+        int end = arr.length-1;
+        char[] reversedArr = new char[arr.length];
 
+        for (char c : arr) {
+            int num = Character.getNumericValue(c);
+            if (num == 3 || num == 4 || num == 7) {
+                return new char[0];
+            }
+
+            switch (num) {
+                case 1, 2, 5, 8, 0:
+                    reversedArr[end] = (char) (num + '0');
+                    end--;
+                    break;
+                case 6:
+                    reversedArr[end] = '9';
+                    end--;
+                    break;
+                case 9:
+                    reversedArr[end] = '6';
+                    end--;
+                    break;
+                default:
+                    
+            }
+        }
+
+        return reversedArr;
+    }
+
+    private static boolean isPrime(long number){
+        for (int i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i == 0){
+                return false;
+            }
+        }
+        return true;
     }
 }
