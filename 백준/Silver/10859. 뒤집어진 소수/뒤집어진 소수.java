@@ -6,13 +6,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         String input = br.readLine();
+
         System.out.println(sol(input));
     }
 
     private static String sol(String input) {
         long number = Long.parseLong(input);
-        
+
         if (number != 1 && isPrime(number)) {
             char[] reversedArr = isReversible(input.toCharArray());
 
@@ -29,25 +31,22 @@ public class Main {
         int end = arr.length - 1;
         char[] reversedArr = new char[arr.length];
 
-        for (char c : arr) {
-            int num = Character.getNumericValue(c);
-            if (num == 3 || num == 4 || num == 7) {
+        for (char num : arr) {
+            if (num == '3' || num == '4' || num == '7') {
                 return new char[0];
             }
 
             switch (num) {
-                case 1, 2, 5, 8, 0:
-                    reversedArr[end] = (char) (num + '0');
-                    end--;
+                case '1', '2', '5', '8', '0':
+                    reversedArr[end] = num;
                     break;
-                case 6:
+                case '6':
                     reversedArr[end] = '9';
-                    end--;
                     break;
-                case 9:
+                case '9':
                     reversedArr[end] = '6';
-                    end--;
             }
+            end--;
         }
 
         return reversedArr;
