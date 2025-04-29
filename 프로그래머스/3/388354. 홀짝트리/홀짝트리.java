@@ -2,12 +2,10 @@ import java.io.*;
 import java.util.*;
 
 class Solution {
-    
-    public final boolean REVERSE_TREE = true;
-    public final boolean NORMAL_TREE = false;
+
     public ArrayList<Integer>[] adj;
     public int maxNode;
-    
+    public boolean[] visited;
     
     public int[] solution(int[] nodes, int[][] edges) {
         
@@ -20,7 +18,7 @@ class Solution {
     
     private int[] dfs(int[] nodes){
         
-        boolean[] visited = new boolean[maxNode+1];
+        visited = new boolean[maxNode+1];
         
         int nomalTree = 0;
         int reverseTree = 0;
@@ -32,10 +30,11 @@ class Solution {
             ArrayDeque<Integer> s = new ArrayDeque<>();
             s.push(node);
             
-            boolean isExistReverseRoot = false;
-            boolean isExistNomalRoot = false;
-            
             int nodeCount = 0;
+            
+            int reverseRootCount = 0;
+            int nomalRootCount = 0;
+            
             int nomalChildCount = 0;
             int reverseChildCount = 0;
             
@@ -62,13 +61,18 @@ class Solution {
                     역홀짝 트리의 자식 노드가 될 수 없다.
                 */
                 if(state){
-                    isExistNomalRoot = true;
+                    nomalRootCount++;
                     reverseChildCount++;
                     
                 }else{
-                    isExistReverseRoot = true;
+                    reverseRootCount++;
                     nomalChildCount++;
                 }
+                
+                // if(nomalRootCount >= 2 && reverseRootCount >= 2){
+                //     fillTrue(n);
+                //     break;
+                // }
                 
                 for(int a : adj[n]){
                     if(visited[a]) continue;
@@ -77,11 +81,12 @@ class Solution {
 
             }//while
             
+            //System.out.println(Arrays.toString(visited));
                             
-            if(reverseChildCount == nodeCount-1 && isExistReverseRoot){
+            if(reverseChildCount == nodeCount-1 && reverseRootCount == 1){
                 reverseTree++;
             }
-            if(nomalChildCount == nodeCount-1 && isExistNomalRoot){
+            if(nomalChildCount == nodeCount-1 && nomalRootCount == 1){
                 nomalTree++;
             }
             
@@ -90,6 +95,23 @@ class Solution {
         return new int[]{nomalTree,reverseTree};
     }
     
+    private void fillTrue(int node){
+        
+        ArrayDeque<Integer> s = new ArrayDeque<>();
+        s.push(node);
+        
+        while(!s.isEmpty()){
+            int a = s.pop();
+            
+            visited[a] = true;
+            
+            for(int b : adj[a]){
+                if(visited[b]) continue;
+                s.push(b);
+            }
+        }
+        
+    }
     
     private void init(int[] nodes, int[][] edges){
         
