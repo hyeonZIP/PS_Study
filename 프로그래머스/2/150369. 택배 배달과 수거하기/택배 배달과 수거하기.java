@@ -10,21 +10,24 @@ class Solution {
     
     public long solution(int cap, int n, int[] deliveries, int[] pickups) {
         
-        long answer = 0L;
+        long answer = 0;
         
-        int index = n;
+        int sum1 = 0;
+        int sum2 = 0;
         
-        while(n!=-1){
+        for(int i=n-1; i>=0; i--){
             
-            int sum1 = 0;
-            for(int i=index-1; i>=0; i--){
+            sum1 += deliveries[i];
+            sum2 += pickups[i];
+            
+            while( sum1 > 0 || sum2 > 0){
                 
-                sum1 += deliveries[i];
-                
-                
+                sum1 -= cap;
+                sum2 -= cap;
+                answer += (i+1) * 2;
                 
             }
-
+            
         }
    
         return answer;
