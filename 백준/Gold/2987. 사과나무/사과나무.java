@@ -1,8 +1,16 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
-    
+
     public static class Pos{
 
         private int x;
@@ -19,8 +27,9 @@ public class Main {
     public static List<Pos> appleTreePos = new ArrayList<>();
     public static int appleTreeCount;
 
-    public static double answerTriangleArea;
     public static int answerAppleTreeCount;
+
+    public static BigDecimal answerTriangleArea;
 
     public static void main(String[] args) throws IOException{
         
@@ -74,38 +83,38 @@ public class Main {
 
         for(Pos atp : appleTreePos){
 
-            if(isInArea(atp)){
-                
-                answerAppleTreeCount++;
+            if(isOutOfRange(atp)){
+
+                continue;
             }
+
+            answerAppleTreeCount++;
         }
     }
 
-    
-    private static boolean isInArea(Pos pos) {
-        
-        Pos A = triangleVertexPos.get(0);
-        Pos B = triangleVertexPos.get(1);
-        Pos C = triangleVertexPos.get(2);
-        
-        int ccw1 = ccw(A, B, pos);
-        int ccw2 = ccw(B, C, pos);
-        int ccw3 = ccw(C, A, pos);
-        
-        return (ccw1 >= 0 && ccw2 >= 0 && ccw3 >= 0) || 
-            (ccw1 <= 0 && ccw2 <= 0 && ccw3 <= 0);
+    private static boolean isOutOfRange(Pos atp){
+
+        int xA = triangleVertexPos.get(0).x;
+        int yA = triangleVertexPos.get(0).y;
+        int xB = triangleVertexPos.get(1).x;
+        int yB = triangleVertexPos.get(1).y;
+        int xC = triangleVertexPos.get(2).x;
+        int yC = triangleVertexPos.get(2).y;
+
+        int xATP = atp.x;
+        int yATP = atp.y;
+
+        double calcResult = 
+            Math.abs(xATP * (yB - yC) + xB * (yC - yATP) + xC * (yATP - yB)) +
+            Math.abs(xA * (yATP - yC) + xATP * (yC - yA) + xC * (yA - yATP)) +
+            Math.abs(xA * (yB - yATP) + xB * (yATP - yA) + xATP * (yA - yB));
+
+        BigDecimal calcDecimal = new BigDecimal(calcResult);
+
+        calcDecimal = calcDecimal.divide(BigDecimal.valueOf(2));
+
+        return answerTriangleArea.compareTo(calcDecimal) != 0;
     }
-
-    private static int ccw(Pos a, Pos b, Pos c){
-
-        long result = (long)(a.x) * (b.y - c.y) 
-                    + (long)(b.x) * (c.y - a.y) 
-                    + (long)(c.x) * (a.y - b.y);
-        
-        if (result == 0) return 0;// 일직선
-        else if (result > 0) return 1;// 반시계 방향
-        else return -1;// 시계 방향
-     }
 
     private static void calcTriangleArea(){
 
@@ -116,13 +125,15 @@ public class Main {
         int xC = triangleVertexPos.get(2).x;
         int yC = triangleVertexPos.get(2).y;
 
+        
         double calcResult = Math.abs(
             xA * (yB - yC) +
             xB * (yC - yA) +
-            xC * (yA - yB)) 
-            / 2.0;
+            xC * (yA - yB));
+            
+        answerTriangleArea = new BigDecimal(calcResult).setScale(1, RoundingMode.HALF_EVEN);
 
-        answerTriangleArea = Double.parseDouble(String.format("%.1f", calcResult));
+        answerTriangleArea = answerTriangleArea.divide(BigDecimal.valueOf(2));
     }
 
     private static void printAnswer() throws IOException{
