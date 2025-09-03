@@ -1,67 +1,58 @@
-/*
-*   HashMap에 각 커맨드 별로 좌표 이동 값을 담는다
-*   dirs의 입력에 따라 나온 커맨드 별 좌표 이동 값을 Queue에 삽입한다
-*   BFS와 비슷한 형태로 Queue가 빌 때까지 반복한다
-*   Set을 이용하여 A to B 그리고 B to A 의 형태로 좌표를 String으로 변경하여 저장한다
-*   Set의 중복 제거 특성을 이용하여 이미 지나온 길인지 거르고
-*   정답을 출력할 땐 나누기 2를 해준다
-*/
-
+import java.io.*;
 import java.util.*;
 
 class Solution {
     
-    public class Pair{
-        int x;
-        int y;
-        
-        public Pair(int x,int y){
-            this.x = x;
-            this.y = y;
-        }
-    }
-    
-    
+    public HashMap<String, int[]> cmd = new HashMap<>();
     
     public int solution(String dirs) {
         
-        HashMap<String,Pair> command = new HashMap<>();
-        Set<String> firstMove = new HashSet<>();
-        Queue<Pair> q = new LinkedList<>();
+        init();
         
-        command.put("U",new Pair(0,1));
-        command.put("D",new Pair(0,-1));
-        command.put("R",new Pair(1,0));
-        command.put("L",new Pair(-1,0));
+        return sol(dirs);
+    }
+    
+    private int sol(String dirs){
         
-        for(int i=0; i<dirs.length(); i++){
+        HashSet<String> answer = new HashSet<>();
+        
+        int y = 5;
+        int x = 5;
+        
+        String[] dir = dirs.split("");
+        
+        for(String s : dir){
             
-            String cmd = String.valueOf(dirs.charAt(i));
+            int[] arr = cmd.get(s);
             
-            q.offer(command.get(cmd));
-        }
-        int x = 0;
-        int y = 0;
-        int answer = 0;
-        while(!q.isEmpty()){
-            Pair p = q.poll();
+            if(isOutOfRange(y+arr[0], x+arr[1])){
+                
+                continue;
+            }
             
-            int px = p.x + x;
-            int py = p.y + y;
+            int previousY = y;
+            int previousX = x;
             
-            if(px < -5 || px > 5 || py <-5 || py >5) continue;
+            y += arr[0];
+            x += arr[1];
             
-            String fromTo = String.valueOf(x)+String.valueOf(y)+String.valueOf(px)+String.valueOf(py);
-            String toFrom = String.valueOf(px)+String.valueOf(py) + String.valueOf(x)+String.valueOf(y);
-            
-            firstMove.add(fromTo);
-            firstMove.add(toFrom);
-            
-            x = px;
-            y = py;  
-            answer++;    
+            answer.add(previousY+""+previousX+""+y+""+x);
+            answer.add(y+""+x+""+previousY+""+previousX);
         }
         
-        return firstMove.size()/2;
+        return answer.size()/2;
+    }
+    
+    private boolean isOutOfRange(int y, int x){
+        
+        return y < 0 || x < 0 || y > 10 || x > 10;
+    }
+    
+    private void init(){
+        
+        cmd.put("U", new int[]{1,0});
+        cmd.put("D", new int[]{-1,0});
+        cmd.put("R", new int[]{0,1});
+        cmd.put("L", new int[]{0,-1});
     }
 }
