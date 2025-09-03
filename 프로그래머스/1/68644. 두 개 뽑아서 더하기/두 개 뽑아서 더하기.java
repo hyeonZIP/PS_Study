@@ -1,17 +1,19 @@
+import java.io.*;
 import java.util.*;
+
 class Solution {
     public int[] solution(int[] numbers) {
         
-        int numbersLength = numbers.length;
-        Set<Integer> answer = new HashSet<>();
+        HashSet<Integer> set = new HashSet<>();
         
-        for(int i=0; i<numbersLength; i++){
+        for(int i=0; i<numbers.length; i++){
             
-            for(int j=i+1; j<numbersLength; j++){
-                answer.add(numbers[i] + numbers[j]);
+            for(int j=i+1; j<numbers.length; j++){
+                
+                set.add(numbers[i] + numbers[j]);
             }
         }
         
-        return answer.stream().sorted().mapToInt(Integer::new).toArray();
+        return set.stream().sorted().mapToInt(i->i).toArray();
     }
 }
