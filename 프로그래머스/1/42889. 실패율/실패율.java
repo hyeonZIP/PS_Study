@@ -51,15 +51,9 @@ class Solution {
         
         List<Map.Entry<Integer,Float>> answer = new ArrayList<>(map.entrySet());
         
-        answer.sort((o1,o2)->{
-            
-            if(o1.getValue().equals(o2.getValue())){
-                
-                return o1.getKey() - o2.getKey();
-            }
-            
-            return Float.compare(o2.getValue(), o1.getValue());
-        });
+        answer.sort(Comparator
+                    .comparing(Map.Entry<Integer,Float>::getValue).reversed()
+       );
         
         return answer.stream().mapToInt(i->i.getKey()).toArray();
     }
