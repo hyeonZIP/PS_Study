@@ -60,14 +60,14 @@ public class Main {
             String targetString = targetLED[i];
             String currentString = currentLED[i];
 
-            if (targetString != currentString) {
+            if (isDifferentNumber(targetString, currentString)) {
                 
                 for(int j=0; j<DIODE; j++){
 
                     int targetNum = Integer.parseInt(targetString);
                     int currentNum = Integer.parseInt(currentString);
 
-                    if (DIODE_STATE[targetNum][j] != DIODE_STATE[currentNum][j]) {
+                    if (isDifferentDiodeState(DIODE_STATE[targetNum][j], DIODE_STATE[currentNum][j])) {
 
                         changeCount++;
                     }
@@ -78,6 +78,16 @@ public class Main {
         }
 
         return true;
+    }
+
+    private static boolean isDifferentDiodeState(int target, int current){
+
+        return target != current;
+    }
+
+    private static boolean isDifferentNumber(String target, String current){
+
+        return target != current;
     }
 
     private static boolean isSameFloor(int i){
