@@ -50,7 +50,7 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
 
-        arr = new int[k+1];
+        arr = new int[n+1];
         dp = new int[k+1];
 
         for(int i=1; i<=n; i++){
