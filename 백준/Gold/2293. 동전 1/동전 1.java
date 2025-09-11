@@ -1,35 +1,65 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
+    
+    public static int n,k;
+
+    public static int[] dp;
+    public static int[] arr;
+
     public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
+        init();
 
-        int[] arr = new int[n+1];
+        solution();
 
+        print();
+    }
+
+    private static void solution(){
+       
         for(int i=1; i<=n; i++){
-            arr[i] = Integer.parseInt(br.readLine());
-        }
-        int[] dp = new int[k+1];
 
-        dp[0] =1;
+            int coin = arr[i];
 
-        for (int i=1; i<=n; i++){
             for(int j=1; j<=k; j++){
-                if (j >= arr[i]){
-                    dp[j] = dp[j]+dp[j-arr[i]];
+                
+                if(coin <= j){
+
+                    dp[j] += dp[j - coin];
                 }
             }
         }
+    }
+
+    private static void print() throws IOException{
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         bw.write(dp[k]+"");
-        bw.flush();
         bw.close();
-        br.close();
+    }
+
+    private static void init() throws IOException{
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+
+        arr = new int[k+1];
+        dp = new int[k+1];
+
+        for(int i=1; i<=n; i++){
+
+            int coin = Integer.parseInt(br.readLine());
+
+            arr[i] = coin;
+        }
+
+        dp[0] = 1;
     }
 }
