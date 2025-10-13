@@ -6,7 +6,6 @@ class Solution {
     public class Q{
         
         int peek;
-        long initTotal;
         long total;
         ArrayList<Integer> arr = new ArrayList<>();
         
@@ -17,11 +16,8 @@ class Solution {
             for(int i=0; i<arr.length; i++){
                 
                 this.total += arr[i];
-                
                 this.arr.add(arr[i]);
             }
-            
-            this.initTotal = this.total;
         }
     }
     
@@ -29,9 +25,11 @@ class Solution {
         
         Q q1 = new Q(queue1);
         Q q2 = new Q(queue2);
+        
         int maximum = queue1.length * 3;
         int answer = -1;
         int count = 0;
+        
         while(count <= maximum){
             
             if(q1.total == q2.total){
