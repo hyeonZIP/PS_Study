@@ -13,7 +13,6 @@ class Solution {
     
     private void dfs(Set<String> set, String[] bannedIds, String[] userIds, int depth){
         if(depth == bannedIds.length){
-            // System.out.println("체크 : " + set);
             answer.add(set);
             return;
         }
@@ -35,18 +34,9 @@ class Solution {
     
     private boolean isBannedId(String bannedId, String userId){
         if(userId.length() != bannedId.length()) return false;
-            
-        String[] splittedBannedId = bannedId.split("");
-        String[] splittedUserId = userId.split("");
         
-        for(int i=0; i<splittedBannedId.length; i++){
-            if(splittedBannedId[i].equals("*")){
-                continue;    
-            }
-            
-            if(splittedBannedId[i].equals(splittedUserId[i])){
-                continue;
-            }else{
+        for(int i=0; i<bannedId.length(); i++){
+            if(bannedId.charAt(i) != '*' && bannedId.charAt(i) != userId.charAt(i)){
                 return false;
             }
         }
