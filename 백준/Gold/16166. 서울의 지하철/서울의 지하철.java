@@ -22,8 +22,41 @@ public class Main {
             return;
         }
 
+        // for (int line : startLines) {
+        // dfs(0, new boolean[11], line, 0);
+        // }
+
+        bfs(startLines);
+    }
+
+    private static void bfs(List<Integer> startLines) {
+        Queue<int[]> q = new ArrayDeque<>();
+        boolean[] visited = new boolean[11];
+
         for (int line : startLines) {
-            dfs(0, new boolean[11], line, 0);
+            q.offer(new int[] { line, 0 });
+            visited[line] = true;
+        }
+
+        while (!q.isEmpty()) {
+            int[] arr = q.poll();
+
+            int line = arr[0];
+            int count = arr[1];
+
+            if (isTargetHere(line)) {
+                answer = count;
+                return;
+            }
+
+            Set<Integer> nextLines = findNextLines(line, visited);
+
+            for (int nextLine : nextLines) {
+                if (!visited[nextLine]) {
+                    visited[nextLine] = true;
+                    q.offer(new int[] { nextLine, count + 1 });
+                }
+            }
         }
     }
 
