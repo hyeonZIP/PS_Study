@@ -35,6 +35,10 @@ public class Main {
             return;
         }
 
+        if (count >= answer) {
+            return;
+        }
+
         if (depth == N) {
             return;
         }
