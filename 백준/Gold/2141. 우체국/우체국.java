@@ -30,10 +30,12 @@ public class Main {
 
         long current = 0l;
 
+        long minimumDiffPosition = total % 2 == 0 ? total / 2 : (total + 1) / 2;
+
         for (PostOffice postOffice : postOffices) {
             current += Long.valueOf(postOffice.a);
 
-            if ((total % 2l == 0l && current >= total / 2l) || (total % 2l != 0l && current >= (total + 1l) / 2l)) {
+            if (current >= minimumDiffPosition) {
                 answer = postOffice.x;
                 return;
             }
