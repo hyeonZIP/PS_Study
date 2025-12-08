@@ -2,16 +2,17 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    private static final int WHITE = 0;
     private static final int RED = 1;
     private static final int BLUE = 2;
-    private static final int MEANINGLESS = -1;
+    private static final int IMPOSSIBLE = -1;
+    private static final int FOUND_ANSWER = 1;
+    private static final int NEXT = 0;
     private static final int RIGHT = 1;
     private static final int LEFT = 2;
     private static final int UP = 3;
     private static final int DOWN = 4;
-    private static final int[] dy = new int[] { MEANINGLESS, 0, 0, -1, 1 };
-    private static final int[] dx = new int[] { MEANINGLESS, 1, -1, 0, 0 };
+    private static final int[] dy = new int[] { IMPOSSIBLE, 0, 0, -1, 1 };
+    private static final int[] dx = new int[] { IMPOSSIBLE, 1, -1, 0, 0 };
 
     private static class Pawn {
         private int number;
@@ -20,6 +21,15 @@ public class Main {
         public Pawn(int number, int direction) {
             this.number = number;
             this.direction = direction;
+        }
+    }
+
+    private static class Position {
+        private int y, x;
+
+        public Position(int y, int x) {
+            this.y = y;
+            this.x = x;
         }
     }
 
@@ -37,155 +47,102 @@ public class Main {
         answer();
     }
 
-    private static void test() {
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= N; j++) {
-                if (board[i][j].isEmpty()) {
-                    System.out.print("0");
-                    continue;
-                }
-
-                System.out.print("[");
-                board[i][j].forEach(o -> System.out.print(o.number));
-                System.out.print("]");
-            }
-            System.out.println();
-        }
-        System.out.println("-------------------------------------------------------");
-    }
-
     private static void sol() {
-        int count = 1;
-
-        // test();
-
-        while (count <= 1000) {
+        for (int turn = 1; turn <= 1000; turn++) {
             int state = movePawn();
-            // test();
 
-            if (state == -1) {
-                answer = -1;
+            if (state == FOUND_ANSWER) {
+                answer = turn;
                 return;
-            } else if (state == 1) {
-                answer = count;
+            } else if (state == IMPOSSIBLE) {
+                answer = IMPOSSIBLE;
                 return;
-            } else {
-                count++;
             }
         }
-
-        answer = -1;
+        answer = IMPOSSIBLE;
     }
 
     private static int movePawn() {
-        int pawnNumber = 1;
-        int emptyCount = 1;
+        int movedCount = 0;
 
-        while (pawnNumber <= K) {
-            List<int[]> pawns = findPawnsNextOrder(pawnNumber);
+        for (int pawnNumber = 1; pawnNumber <= K; pawnNumber++) {
+            Position pos = findPawnPosition(pawnNumber);
 
-            if (!pawns.isEmpty()) {
-                int y = pawns.get(0)[0];
-                int x = pawns.get(0)[1];
-                int direction = board[y][x].get(0).direction;
-
-                int nextY = y + dy[direction];
-                int nextX = x + dx[direction];
-                int nextColor;
-
-                if (nextY < 1 || nextX < 1 || nextY > N || nextX > N) {
-                    nextColor = BLUE;
-                } else {
-                    nextColor = color[nextY][nextX];
-                }
-
-                switch (nextColor) {
-                    case WHITE:
-                        board[nextY][nextX].addAll(board[y][x]);
-                        board[y][x].clear();
-                        if (board[nextY][nextX].size() >= 4) {
-                            return 1;
-                        }
-                        break;
-                    case RED:
-                        Collections.reverse(board[y][x]);
-                        board[nextY][nextX].addAll(board[y][x]);
-                        board[y][x].clear();
-                        if (board[nextY][nextX].size() >= 4) {
-                            return 1;
-                        }
-                        break;
-                    case BLUE:
-                        int reverseDirection;
-                        if (direction >= 3) {
-                            reverseDirection = direction == UP ? DOWN : UP;
-                        } else {
-                            reverseDirection = direction == RIGHT ? LEFT : RIGHT;
-                        }
-
-                        int nextNextY = y + dy[reverseDirection];
-                        int nextNextX = x + dx[reverseDirection];
-                        int nextNextColor;
-
-                        if (nextNextY < 1 || nextNextX < 1 || nextNextY > N || nextNextX > N) {
-                            nextNextColor = BLUE;
-                        } else {
-                            nextNextColor = color[nextNextY][nextNextX];
-                        }
-
-                        switch (nextNextColor) {
-                            case WHITE:
-                                board[y][x].get(0).direction = reverseDirection;
-                                board[nextNextY][nextNextX].addAll(board[y][x]);
-                                board[y][x].clear();
-                                if (board[nextNextY][nextNextX].size() >= 4) {
-                                    return 1;
-                                }
-                                break;
-                            case RED:
-                                board[y][x].get(0).direction = reverseDirection;
-                                Collections.reverse(board[y][x]);
-                                board[nextNextY][nextNextX].addAll(board[y][x]);
-                                board[y][x].clear();
-                                if (board[nextNextY][nextNextX].size() >= 4) {
-                                    return 1;
-                                }
-                                break;
-                            case BLUE:
-                                board[y][x].get(0).direction = reverseDirection;
-                        }
-
-                        break;
-                }
-            } else {
-                emptyCount++;
+            if (pos == null) {
+                continue;
             }
 
-            pawnNumber++;
+            movedCount++;
+
+            Pawn bottomPawn = board[pos.y][pos.x].get(0);
+            int result = movePawnStack(pos.y, pos.x, bottomPawn.direction);
+
+            if (result == FOUND_ANSWER) {
+                return FOUND_ANSWER;
+            }
         }
 
-        if (emptyCount == K) {
-            // 불가능한 경우
-            return -1;
-        } else {
-            return 0;
-        }
+        return movedCount == 0 ? IMPOSSIBLE : NEXT;
     }
 
-    private static List<int[]> findPawnsNextOrder(int pawnNumber) {
-        List<int[]> pawnsNextOrder = new ArrayList<>();
+    private static int movePawnStack(int y, int x, int direction) {
+        int nextY = y + dy[direction];
+        int nextX = x + dx[direction];
+        int nextColor = findNextColor(nextY, nextX);
 
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= N; j++) {
-                if (board[i][j].isEmpty() || board[i][j].get(0).number != pawnNumber) {
-                    continue;
-                }
-
-                pawnsNextOrder.add(new int[] { i, j });
-            }
+        if (nextColor != BLUE) {
+            return executeMove(y, x, nextY, nextX, nextColor);
         }
 
-        return pawnsNextOrder;
+        int reversedDirection = reverseDirection(direction);
+        board[y][x].get(0).direction = reversedDirection;
+
+        int nextnextY = y + dy[reversedDirection];
+        int nextnextX = x + dx[reversedDirection];
+        int nextnextColor = findNextColor(nextnextY, nextnextX);
+
+        if (nextnextColor == BLUE) {
+            return NEXT;
+        }
+
+        return executeMove(y, x, nextnextY, nextnextX, nextnextColor);
+    }
+
+    private static int executeMove(int y, int x, int nextY, int nextX, int color) {
+        if (color == RED) {
+            Collections.reverse(board[y][x]);
+        }
+
+        board[nextY][nextX].addAll(board[y][x]);
+        board[y][x].clear();
+
+        return board[nextY][nextX].size() >= 4 ? FOUND_ANSWER : NEXT;
+    }
+
+    private static Position findPawnPosition(int pawnNumber) {
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= N; j++) {
+                if (!board[i][j].isEmpty() && board[i][j].get(0).number == pawnNumber) {
+                    return new Position(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
+    private static int reverseDirection(int direction) {
+        if (direction >= 3) {
+            return direction == UP ? DOWN : UP;
+        }
+
+        return direction == RIGHT ? LEFT : RIGHT;
+    }
+
+    private static int findNextColor(int y, int x) {
+        if (y < 1 || x < 1 || y > N || x > N) {
+            return BLUE;
+        }
+        return color[y][x];
     }
 
     private static void init() throws IOException {
