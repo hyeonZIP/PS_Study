@@ -5,7 +5,6 @@ public class Main {
     private static final String EMPTY = "0";
     private static final String STUDENT = "1";
     private static final String TARGET = "#";
-    private static final String START = "*";
     private static final int[] dy = new int[] { 0, 0, -1, 1 };
     private static final int[] dx = new int[] { -1, 1, 0, 0 };
 
@@ -21,29 +20,7 @@ public class Main {
         answer();
     }
 
-    private static void test() {
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                System.out.print(map[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("-------------------");
-    }
-
     private static void sol() {
-        // int count = 1;
-        // while (true) {
-        // // test();
-        // String[][] copiedMap = copyMap();
-
-        // if (bfs(copiedMap) == 1) {
-        // answer = count;
-        // return;
-        // }
-
-        // count++;
-        // }
         answer = zeroOneBFS();
     }
 
@@ -96,48 +73,6 @@ public class Main {
                 }
             }
         }
-
-        return 0;
-    }
-
-    private static int bfs(String[][] copiedMap) {
-        Deque<int[]> q = new ArrayDeque<>();
-        q.offer(startPos);
-
-        boolean[][] visited = new boolean[N][M];
-        visited[startPos[0]][startPos[1]] = true;
-
-        while (!q.isEmpty()) {
-            int[] arr = q.poll();
-
-            int y = arr[0];
-            int x = arr[1];
-
-            for (int i = 0; i < 4; i++) {
-                int py = y + dy[i];
-                int px = x + dx[i];
-
-                if (isOutOfRange(py, px) || visited[py][px]) {
-                    continue;
-                }
-                visited[py][px] = true;
-                if (map[py][px].equals(EMPTY)) {
-                    q.offer(new int[] { py, px });
-                    continue;
-                }
-
-                if (map[py][px].equals(STUDENT)) {
-                    copiedMap[py][px] = EMPTY;
-                    continue;
-                }
-
-                if (map[py][px].equals(TARGET)) {
-                    return 1;
-                }
-            }
-        }
-
-        map = copiedMap;
 
         return 0;
     }
