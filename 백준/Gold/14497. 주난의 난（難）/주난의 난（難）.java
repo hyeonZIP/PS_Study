@@ -32,18 +32,19 @@ public class Main {
     }
 
     private static void sol() {
-        int count = 1;
-        while (true) {
-            // test();
-            String[][] copiedMap = copyMap();
+        // int count = 1;
+        // while (true) {
+        // // test();
+        // String[][] copiedMap = copyMap();
 
-            if (bfs(copiedMap) == 1) {
-                answer = count;
-                return;
-            }
+        // if (bfs(copiedMap) == 1) {
+        // answer = count;
+        // return;
+        // }
 
-            count++;
-        }
+        // count++;
+        // }
+        answer = zeroOneBFS();
     }
 
     private static String[][] copyMap() {
@@ -56,6 +57,47 @@ public class Main {
         }
 
         return copiedMap;
+    }
+
+    private static int zeroOneBFS() {
+        Deque<int[]> q = new ArrayDeque<>();
+        q.offer(new int[] { startPos[0], startPos[1], 1 });
+
+        boolean[][] visited = new boolean[N][M];
+        visited[startPos[0]][startPos[1]] = true;
+
+        while (!q.isEmpty()) {
+            int[] arr = q.poll();
+
+            int y = arr[0];
+            int x = arr[1];
+            int count = arr[2];
+
+            for (int i = 0; i < 4; i++) {
+                int py = y + dy[i];
+                int px = x + dx[i];
+
+                if (isOutOfRange(py, px) || visited[py][px]) {
+                    continue;
+                }
+                visited[py][px] = true;
+                if (map[py][px].equals(EMPTY)) {
+                    q.addFirst(new int[] { py, px, count });
+                    continue;
+                }
+
+                if (map[py][px].equals(STUDENT)) {
+                    q.addLast(new int[] { py, px, count + 1 });
+                    continue;
+                }
+
+                if (map[py][px].equals(TARGET)) {
+                    return count;
+                }
+            }
+        }
+
+        return 0;
     }
 
     private static int bfs(String[][] copiedMap) {
