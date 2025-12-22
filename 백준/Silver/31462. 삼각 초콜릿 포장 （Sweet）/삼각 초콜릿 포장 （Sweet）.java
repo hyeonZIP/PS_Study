@@ -58,7 +58,7 @@ public class Main {
     }
 
     private static boolean isValidRange(int y, int x) {
-        return y >= 0 || x >= 0 || y < N || x < map[y].length;
+        return y >= 0 && x >= 0 && y < N && x < map[y].length;
     }
 
     private static void print() throws IOException {
