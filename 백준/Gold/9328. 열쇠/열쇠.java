@@ -5,7 +5,6 @@ public class Main {
     private static final int[] dy = new int[] { 0, 0, -1, 1 };
     private static final int[] dx = new int[] { -1, 1, 0, 0 };
     private static final char WALL = '*';
-    private static final char EMPTY = '.';
     private static final char TARGET = '$';
 
     private static StringBuilder answer = new StringBuilder();
@@ -21,16 +20,13 @@ public class Main {
 
     private static void sol() {
         for (int t = 0; t < testcase; t++) {
-            bfs(maps[t], keys[t]);
+            bfs(maps[t], keys[t], maps[t].length, maps[t][0].length);
         }
     }
 
-    private static void bfs(char[][] map, Set<Character> key) {
-        int h = map.length;
-        int w = map[0].length;
+    private static void bfs(char[][] map, Set<Character> key, int h, int w) {
         boolean[][] visited = new boolean[h][w];
-        Deque<int[]> q = findStartPosition(map, visited);
-
+        Deque<int[]> q = findStartPosition(map, visited, h, w);
         List<int[]>[] lockedDoors = initLockedDoors();
 
         int result = 0;
@@ -90,11 +86,8 @@ public class Main {
     }
 
     // 탐색 시작 좌표 반환
-    private static Deque<int[]> findStartPosition(char[][] map, boolean[][] visited) {
+    private static Deque<int[]> findStartPosition(char[][] map, boolean[][] visited, int h, int w) {
         Deque<int[]> q = new ArrayDeque<>();
-
-        int h = map.length;
-        int w = map[0].length;
 
         // 모서리에 열쇠 존재 가능성 염두
         for (int i = 0; i < w; i++) {
