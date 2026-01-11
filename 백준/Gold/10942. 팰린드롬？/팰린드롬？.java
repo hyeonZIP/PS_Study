@@ -39,22 +39,23 @@ public class Main {
     }
 
     private static void palindrome() {
+        // S~E 길이가 1인경우
         for (int i = 1; i <= N; i++) {
-            dp[i][i] = true;// S==E 는 무조건 true, S~E의 갯수가 홀수일 경우 사용
+            dp[i][i] = true;
         }
 
+        // S~E 길이가 2인경우
         for (int i = 1; i <= N - 1; i++) {
             if (arr[i] == arr[i + 1]) {
-                dp[i][i + 1] = true;// S~E의 갯수가 짝수일 경우 사용
+                dp[i][i + 1] = true;
             }
         }
 
-        for (int len = 2; len < N; len++) {
-            for (int i = 1; i <= N - len; i++) {
-                int j = i + len;
-
-                if (arr[i] == arr[j] && dp[i + 1][j - 1]) {
-                    dp[i][j] = true;
+        // S~E 길이가 3이상인 경우
+        for (int i = 2; i < N; i++) {
+            for (int j = 1; j <= N - i; j++) {
+                if (arr[j] == arr[j + i] && dp[j + 1][j + i - 1]) {
+                    dp[j][j + i] = true;
                 }
             }
         }
