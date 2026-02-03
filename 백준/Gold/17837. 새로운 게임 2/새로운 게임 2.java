@@ -67,7 +67,7 @@ public class Main {
         }
     }
 
-    private static int answer;
+    private static int answer = -1;
     private static int N, K;
     private static int[][] color;
     private static Board[][] board;
@@ -81,7 +81,7 @@ public class Main {
     private static void sol() {
         int count = 0;
 
-        while (true) {
+        while (count <= 1000) {
             count++;
             for (int id = 0; id < K; id++) {
                 moveChess(id);
@@ -90,11 +90,6 @@ public class Main {
                     answer = count;
                     return;
                 }
-            }
-
-            if (count > 1000) {
-                answer = -1;
-                return;
             }
         }
     }
