@@ -24,14 +24,11 @@ public class Main {
         int count = 0;
         for (int i = 1; i <= N + 1; i++) {
             if (isVipSeat[i]) {
-                if (count != 0) {
-                    answer *= dp[count];
-                    count = 0;
-                    continue;
-                }
-            } else {
-                count++;
+                answer *= dp[count];
+                count = 0;
+                continue;
             }
+            count++;
         }
     }
 
