@@ -8,6 +8,7 @@ public class Main {
     private static final int[] dx = new int[] { -1, 1, 0, 0 };
     private static int N, M;
     private static int[][] map, answer, idMap;
+    private static boolean[][] visited;
     private static Map<Integer, Integer> idCount = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
@@ -18,15 +19,11 @@ public class Main {
 
     private static void sol() {
         int id = 1;
-        boolean[][] visited = new boolean[N][M];
+
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 if (isEmpty(i, j) && !visited[i][j]) {
-                    answer[i][j] = EMPTY;
-
-                    int count = dfs(i, j, id, visited);
-                    idCount.put(id, count);
-                    id++;
+                    idCount.put(++id, dfs(i, j, id));
                     continue;
                 }
             }
@@ -55,7 +52,7 @@ public class Main {
         }
     }
 
-    private static int dfs(int startY, int startX, int id, boolean[][] visited) {
+    private static int dfs(int startY, int startX, int id) {
         Deque<int[]> s = new ArrayDeque<>();
 
         s.push(new int[] { startY, startX });
@@ -108,6 +105,7 @@ public class Main {
         map = new int[N][M];
         answer = new int[N][M];
         idMap = new int[N][M];
+        visited = new boolean[N][M];
 
         for (int i = 0; i < N; i++) {
             map[i] = Arrays.stream(br.readLine().split("")).mapToInt(Integer::parseInt).toArray();
