@@ -51,13 +51,11 @@ public class Main {
     }
 
     private static void sol(int computerCount, int startComputerNumber, List<Infection>[] computerDependency) {
-        boolean[] visited = new boolean[computerCount + 1];
         int[] dist = new int[computerCount + 1];
 
         Arrays.fill(dist, Integer.MAX_VALUE);
 
         dist[startComputerNumber] = 0;
-        visited[startComputerNumber] = true;
 
         PriorityQueue<Infection> q = new PriorityQueue<>(Comparator.comparingInt(o -> o.time));
 
@@ -66,10 +64,13 @@ public class Main {
         while (!q.isEmpty()) {
             Infection current = q.poll();
 
+            if (current.time > dist[current.node]) {
+                continue;
+            }
+
             for (Infection next : computerDependency[current.node]) {
                 if (dist[next.node] > dist[current.node] + next.time) {
                     dist[next.node] = dist[current.node] + next.time;
-                    visited[next.node] = true;
 
                     q.offer(new Infection(next.node, dist[current.node] + next.time));
                 }
@@ -77,17 +78,11 @@ public class Main {
         }
 
         int infectedComputerCount = 0;
-
-        for (int i = 1; i <= computerCount; i++) {
-            if (visited[i]) {
-                infectedComputerCount++;
-            }
-        }
-
         int infectingTime = 0;
 
         for (int i = 1; i <= computerCount; i++) {
             if (dist[i] != Integer.MAX_VALUE) {
+                infectedComputerCount++;
                 infectingTime = Math.max(dist[i], infectingTime);
             }
         }
