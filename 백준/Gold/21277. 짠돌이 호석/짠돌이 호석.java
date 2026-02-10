@@ -35,34 +35,51 @@ public class Main {
     }
 
     private static void initFrame() {
-        frame = new int[N1 + map2.length][M1 + map2[0].length];
+        frame = new int[N1 + map2.length + map2.length][M1 + map2[0].length + map2[0].length];
 
         for (int i = 0; i < N1; i++) {
             for (int j = 0; j < M1; j++) {
-                frame[i][j] = map1[i][j];
+                frame[map2.length + i][map2[0].length + j] = map1[i][j];
             }
         }
     }
 
     private static void combine() {
-        for (int i = 0; i < N1; i++) {
-            for (int j = 0; j < M1; j++) {
-                if (canCombine(i, j)) {
-                    calculateMinimumFrameSize(i, j);
+        for (int i = 0; i < frame.length - map2.length; i++) {
+            for (int j = 0; j < frame[0].length - map2[0].length; j++) {
+                if (isDuplicate(i, j)) {
+                    continue;
                 }
+
+                calculateMinimumFrameSize(i, j);
             }
         }
     }
 
+    private static boolean isDuplicate(int y, int x) {
+        for (int i = 0; i < map2.length; i++) {
+            for (int j = 0; j < map2[0].length; j++) {
+
+                if (map2[i][j] == PIECE && frame[i + y][j + x] == PIECE) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private static void calculateMinimumFrameSize(int y, int x) {
-        int minY = 0;
-        int minX = 0;
+        int minY = Integer.MAX_VALUE;
+        int minX = Integer.MAX_VALUE;
+        int maxY = Integer.MIN_VALUE;
+        int maxX = Integer.MIN_VALUE;
 
         int[][] testFrame = new int[frame.length][frame[0].length];
 
-        for (int i = 0; i < N1; i++) {
-            for (int j = 0; j < M1; j++) {
-                testFrame[i][j] = map1[i][j];
+        for (int i = 0; i < frame.length; i++) {
+            for (int j = 0; j < frame[0].length; j++) {
+                testFrame[i][j] = frame[i][j];
             }
         }
 
@@ -75,27 +92,16 @@ public class Main {
         for (int i = 0; i < testFrame.length; i++) {
             for (int j = 0; j < testFrame[0].length; j++) {
                 if (testFrame[i][j] == PIECE) {
-                    minX = Math.max(minX, j + 1);
-                    minY = Math.max(minY, i + 1);
+                    minY = Math.min(minY, i);
+                    minX = Math.min(minX, j);
+                    maxY = Math.max(maxY, i);
+                    maxX = Math.max(maxX, j);
                 }
             }
         }
 
-        answer = Math.min(answer, minY * minX);
-    }
+        answer = Math.min(answer, (maxY - minY + 1) * (maxX - minX + 1));
 
-    private static boolean canCombine(int y, int x) {
-
-        for (int i = 0; i < map2.length; i++) {
-            for (int j = 0; j < map2[0].length; j++) {
-
-                if (map2[i][j] == PIECE && frame[i + y][j + x] == PIECE) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     private static void rotate90Degree() {
