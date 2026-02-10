@@ -7,7 +7,7 @@ public class Main {
 
     private static int N1, M1, N2, M2;
     private static int[][] map1, map2, frame;
-    private static int answer = Integer.MAX_VALUE;
+    private static int answer;
 
     public static void main(String[] args) throws IOException {
         init();
@@ -15,14 +15,15 @@ public class Main {
         print();
     }
 
-    private static void print() {
-        System.out.println(answer);
+    private static void print() throws IOException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        bw.write(String.valueOf(answer));
+        bw.close();
     }
 
     private static void sol() {
-        // 둘 중 한 퍼즐만 회전시켜서 대입하기
-        // 90 180 270 360
-        // 전부 안되는 예외를 위해 기본값 필요
+        answer = (N1 + N2) * (M1 + M2);
+
         for (int i = 0; i < 4; i++) {
             rotate90Degree();
 
@@ -57,15 +58,23 @@ public class Main {
         int minY = 0;
         int minX = 0;
 
-        for (int i = 0; i < map2.length; i++) {
-            for (int j = 0; j < map2[0].length; j++) {
-                frame[i + y][j + x] = map2[i][j];
+        int[][] testFrame = new int[frame.length][frame[0].length];
+
+        for (int i = 0; i < N1; i++) {
+            for (int j = 0; j < M1; j++) {
+                testFrame[i][j] = map1[i][j];
             }
         }
 
-        for (int i = 0; i < frame.length; i++) {
-            for (int j = 0; j < frame[0].length; j++) {
-                if (frame[i][j] == PIECE) {
+        for (int i = 0; i < map2.length; i++) {
+            for (int j = 0; j < map2[0].length; j++) {
+                testFrame[i + y][j + x] = map2[i][j];
+            }
+        }
+
+        for (int i = 0; i < testFrame.length; i++) {
+            for (int j = 0; j < testFrame[0].length; j++) {
+                if (testFrame[i][j] == PIECE) {
                     minX = Math.max(minX, j + 1);
                     minY = Math.max(minY, i + 1);
                 }
