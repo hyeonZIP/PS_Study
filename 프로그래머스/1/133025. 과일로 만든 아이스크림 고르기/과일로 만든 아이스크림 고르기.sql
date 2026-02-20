@@ -8,3 +8,5 @@ WHERE
     H.TOTAL_ORDER > 3000
     AND
     I.INGREDIENT_TYPE = 'fruit_based'
+ORDER BY
+    TOTAL_ORDER DESC
