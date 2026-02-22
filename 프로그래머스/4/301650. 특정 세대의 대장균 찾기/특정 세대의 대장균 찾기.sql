@@ -1,0 +1,23 @@
+WITH FIRST_G AS (
+    SELECT
+        ID
+    FROM
+        ECOLI_DATA
+    WHERE
+        PARENT_ID IS NULL
+), SECOND_G AS (
+    SELECT
+        C.ID
+    FROM
+        FIRST_G P
+    JOIN
+        ECOLI_DATA C ON C.PARENT_ID = P.ID
+)
+SELECT
+    C.ID
+FROM
+    SECOND_G P
+JOIN
+    ECOLI_DATA C ON C.PARENT_ID = P.ID
+ORDER BY
+    C.ID
