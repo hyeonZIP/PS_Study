@@ -114,6 +114,9 @@ public class Main {
 
         for (int y = 0; y < length; y++) {
             for (int x = 0; x < length; x++) {
+                if (map[y][x] == 0) {
+                    continue;
+                }
                 int surrounedIceCount = 0;
 
                 for (int i = 0; i < 4; i++) {
