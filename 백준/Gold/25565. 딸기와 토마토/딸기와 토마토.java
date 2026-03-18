@@ -2,17 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static final int[] plusDy = new int[] { 1, 0 };
-    static final int[] plusDx = new int[] { 0, 1 };
-    static final int[] minusDy = new int[] { -1, 0 };
-    static final int[] minusDx = new int[] { 0, -1 };
-    static final int[] dy = new int[] { 0, 0, 1, -1 };
-    static final int[] dx = new int[] { 1, -1, 0, 0 };
     static StringBuilder answer = new StringBuilder();
     static int N, M, K, oneCount;
-    static int[] yCount;
-    static int[] xCount;
-    static int[][] map;
+    static int[] yCount, xCount;
 
     public static void main(String[] args) throws Exception {
         init();
@@ -111,7 +103,6 @@ public class Main {
         M = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        map = new int[N + 1][M + 1];
         yCount = new int[M + 1];
         xCount = new int[N + 1];
 
@@ -125,8 +116,6 @@ public class Main {
                     yCount[j]++;
                     xCount[i]++;
                 }
-
-                map[i][j] = value;
             }
         }
     }
