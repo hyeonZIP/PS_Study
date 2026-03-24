@@ -3,6 +3,7 @@ import java.util.*;
 
 public class Main {
     static final int MAX_VALUE = 1_000_000;
+
     static StringBuilder answer = new StringBuilder();
     static int[] segmentTree = new int[MAX_VALUE * 4];// 사탕의 순위
 
@@ -20,14 +21,15 @@ public class Main {
 
     static void init() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+        StringTokenizer st;
+        
         int n = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < n; i++) {
-            int[] input = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+            st = new StringTokenizer(br.readLine());
 
-            int A = input[0];
-            int B = input[1];
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
             if (A == 1) {
                 // 사탕 꺼내기
                 int rank = B;
@@ -38,7 +40,7 @@ public class Main {
             }
             // 사탕 넣기
             int flavor = B;
-            int count = input[2];
+            int count = Integer.parseInt(st.nextToken());
 
             updateSegment(1, 1, MAX_VALUE, flavor, count);
         }
