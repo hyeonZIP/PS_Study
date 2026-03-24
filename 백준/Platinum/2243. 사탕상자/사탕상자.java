@@ -4,7 +4,6 @@ import java.util.*;
 public class Main {
     static final int MAX_VALUE = 1_000_000;
     static StringBuilder answer = new StringBuilder();
-    static int[] arr = new int[MAX_VALUE + 1];// 해당하는 맛의 사탕이 몇개 있는지
     static int[] segmentTree = new int[MAX_VALUE * 4];// 사탕의 순위
 
     public static void main(String[] args) throws IOException {
@@ -33,8 +32,7 @@ public class Main {
                 // 사탕 꺼내기
                 int rank = B;
                 int flavor = getSegment(1, 1, MAX_VALUE, rank);
-                arr[flavor]--;
-                updateSegment(1, 1, MAX_VALUE, flavor, arr[flavor]);
+                updateSegment(1, 1, MAX_VALUE, flavor, -1);
                 answer.append(flavor).append("\n");
                 continue;
             }
@@ -42,8 +40,7 @@ public class Main {
             int flavor = B;
             int count = input[2];
 
-            arr[flavor] += count;
-            updateSegment(1, 1, MAX_VALUE, flavor, arr[flavor]);
+            updateSegment(1, 1, MAX_VALUE, flavor, count);
         }
     }
 
@@ -67,7 +64,7 @@ public class Main {
         }
 
         if (left == right) {
-            segmentTree[node] = value;
+            segmentTree[node] += value;
             return;
         }
 
