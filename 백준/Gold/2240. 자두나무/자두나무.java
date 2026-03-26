@@ -14,41 +14,26 @@ public class Main {
     }
 
     static void sol() {
-        int[][][] dp = new int[T + 1][W + 1][3];
-        // 1초에서 0번 움직였을 때, 1번 나무에서의 시작값
+        int[][] dp = new int[T + 1][W + 1];
         for (int time = 1; time <= T; time++) {
             int pointTree = input[time];
 
-            for (int moveingCount = 0; moveingCount <= time; moveingCount++) {
+            for (int moveingCount = 0; moveingCount <= time && moveingCount <= W; moveingCount++) {
                 if (moveingCount == 0) {
-                    dp[time][moveingCount][1] += dp[time - 1][moveingCount][1] + (pointTree == 1 ? 1 : 0);
+                    dp[time][0] = dp[time - 1][0] + (pointTree == 1 ? 1 : 0);
                     continue;
                 }
 
-                if (moveingCount > W) {
-                    break;
-                }
+                int currentTree = moveingCount % 2 == 0 ? 1 : 2;
+                int score = pointTree == currentTree ? 1 : 0;
 
-                if (moveingCount % 2 == 0) {
-                    // 제자리 : 1번 나무
-                    dp[time][moveingCount][1] = Math.max(dp[time][moveingCount][1],
-                            Math.max(dp[time - 1][moveingCount - 1][2],
-                                    dp[time - 1][moveingCount][1])
-                                    + (pointTree == 1 ? 1 : 0));
-                } else {
-                    // 2번 나무
-                    dp[time][moveingCount][2] = Math.max(dp[time][moveingCount][2],
-                            Math.max(dp[time - 1][moveingCount - 1][1],
-                                    dp[time - 1][moveingCount][2])
-                                    + (pointTree == 2 ? 1 : 0));
-                }
-
+                dp[time][moveingCount] = Math.max(dp[time - 1][moveingCount], dp[time - 1][moveingCount - 1]) + score;
             }
         }
-        int num1 = Math.max(dp[T][W][1], dp[T][W - 1][1]);
-        int num2 = Math.max(dp[T][W][2], dp[T][W - 1][2]);
 
-        answer = Math.max(num1, num2);
+        for (int movingCount = 0; movingCount <= W; movingCount++) {
+            answer = Math.max(answer, dp[T][movingCount]);
+        }
     }
 
     static void init() throws IOException {
