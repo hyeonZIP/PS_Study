@@ -10,12 +10,12 @@ class Solution {
     public int solution(int[][] grid) {        
         init(grid);
         
-        dfs();
+        bruteForcing();
         
         return answer;
     }
     
-    public void dfs(){             
+    public void bruteForcing(){             
         int index = 1;
         for(int y=0; y<N; y++){
             for(int x=0; x<M; x++){
